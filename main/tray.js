@@ -1,4 +1,4 @@
-const { Tray, screen, Menu } = require('electron');
+const { Tray, screen, Menu, app } = require('electron');
 const path = require('path');
 
 const appDir = path.dirname(require.main.filename);
