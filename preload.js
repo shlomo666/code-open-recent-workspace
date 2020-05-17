@@ -25,6 +25,10 @@ window.addEventListener('DOMContentLoaded', () => {
       resetHTML();
       ipcRenderer.send('hide');
     }
+    if (key === 'Escape') {
+      ipcRenderer.send('hide');
+      resetHTML();
+    }
   };
 
   searchField.onkeydown = (event) => {
@@ -35,6 +39,8 @@ window.addEventListener('DOMContentLoaded', () => {
     } else if (key === 'ArrowUp') {
       console.log('up');
       up();
+    } else if (key === 'Escape') {
+      return;
     }
     setTimeout(() => {
       search(searchField.value);
