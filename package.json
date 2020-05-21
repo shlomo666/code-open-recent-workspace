@@ -15,5 +15,8 @@
     "electron": "^8.2.5",
     "electron-packager": "^14.2.1"
   },
-  "productName": "Code Open Recent Workspace"
+  "productName": "Code Open Recent Workspace",
+  "dependencies": {
+    "shell-path": "^2.1.0"
+  }
 }

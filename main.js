@@ -1,8 +1,10 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const shellPath = require('shell-path');
 const actions = require('./main/actions');
 const tray = require('./main/tray');
+process.env.PATH = shellPath.sync();
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
