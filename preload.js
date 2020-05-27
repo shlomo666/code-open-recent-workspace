@@ -13,6 +13,12 @@ const {
   onSettingChanged
 } = require('./preload/vscodeSettingsReader');
 
+const vscodeAppPath = execSync(
+  `mdfind "kMDItemKind == 'Application'" | grep "Visual Studio Code.app"`
+)
+  .toString()
+  .trim();
+
 window.addEventListener('DOMContentLoaded', () => {
   const searchField = document.getElementById('searchField');
   searchField.focus();
@@ -21,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const { key } = event;
     const currentResult = getCurrentResult();
     if (key === 'Enter' && currentResult) {
-      execSync(`/usr/local/bin/code ${currentResult}`);
+      execSync(`open -n "${vscodeAppPath}" --args ${currentResult}`);
       resetHTML();
       ipcRenderer.send('hide');
     }
