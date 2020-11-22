@@ -25,7 +25,8 @@ exports.show = (win) => {
   win.center();
 
   setTimeout(() => {
-    win.focus();
     app.dock.show();
-  }, 100);
+    win.focus();
+    win.show();
+  }, 10);
 };
