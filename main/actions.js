@@ -1,4 +1,4 @@
-const { app, globalShortcut, screen } = require('electron');
+const { globalShortcut, screen } = require('electron');
 const { getCursorScreenPoint, getDisplayNearestPoint } = screen;
 
 const shortcut = 'alt+space';
@@ -6,7 +6,6 @@ const shortcut = 'alt+space';
 /** @param {Electron.BrowserWindow} win */
 exports.hide = (win) => {
   win.hide();
-  app.dock.hide();
   globalShortcut.register(shortcut, () => {
     exports.show(win);
   });
@@ -16,17 +15,10 @@ exports.hide = (win) => {
 exports.show = (win) => {
   globalShortcut.unregister(shortcut);
 
-  app.dock.hide();
-  win.showInactive();
-
   const currentScreen = getDisplayNearestPoint(getCursorScreenPoint());
   const { x, y } = currentScreen.workArea;
   win.setBounds({ x, y });
   win.center();
-
-  setTimeout(() => {
-    app.dock.show();
-    win.focus();
-    win.show();
-  }, 10);
+  win.focus();
+  win.show();
 };

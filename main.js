@@ -8,10 +8,7 @@ process.env.PATH = shellPath.sync();
 
 const { execSync } = require('child_process');
 if (!execSync('which code').toString().trim()) {
-  dialog.showErrorBox(
-    "Couldn't find code command.",
-    'Please go to vscode; type cmd+shift+p; type "install code" and click the first option.'
-  );
+  dialog.showErrorBox("Couldn't find code command.", 'Please go to vscode; type cmd+shift+p; type "install code" and click the first option.');
   app.exit(1);
   return;
 }
@@ -21,17 +18,18 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
     },
     center: true,
-    fullscreenable: false,
     transparent: true,
     frame: false,
-    show: false
+    show: false,
   });
 
+  app.dock.hide();
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.setFullScreenable(false);
   tray.setTray();
 
   setTimeout(() => {
