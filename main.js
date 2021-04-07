@@ -2,11 +2,13 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const shellPath = require('shell-path');
+const { execSync } = require('child_process');
 const actions = require('./main/actions');
 const tray = require('./main/tray');
+const { sizeConstants } = require('./common/vars');
+
 process.env.PATH = shellPath.sync();
 
-const { execSync } = require('child_process');
 if (!execSync('which code').toString().trim()) {
   dialog.showErrorBox("Couldn't find code command.", 'Please go to vscode; type cmd+shift+p; type "install code" and click the first option.');
   app.exit(1);
@@ -15,8 +17,8 @@ if (!execSync('which code').toString().trim()) {
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: sizeConstants.width,
+    height: sizeConstants.height,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },

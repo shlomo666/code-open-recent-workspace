@@ -1,3 +1,5 @@
+const { sizeConstants } = require('../common/vars');
+
 let choiceIdx = 0;
 /** @type {string[]} */
 let choices = [];
@@ -21,7 +23,7 @@ exports.getUnorderedList = (results, regex) => {
   return `<ul>${results
     .map(
       (result, i) =>
-        `<li style="margin: 0 0 3px 0">${liValue(
+        `<li style="margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: ${sizeConstants.li}px">${liValue(
           result,
           regex,
           i === choiceIdx
