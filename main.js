@@ -8,8 +8,9 @@ const tray = require('./main/tray');
 const { sizeConstants } = require('./common/vars');
 
 process.env.PATH = shellPath.sync();
-
-if (!execSync('which code').toString().trim()) {
+try {
+  execSync('which code');
+} catch (err) {
   dialog.showErrorBox("Couldn't find code command.", 'Please go to vscode; type cmd+shift+p; type "install code" and click the first option.');
   app.exit(1);
   return;
