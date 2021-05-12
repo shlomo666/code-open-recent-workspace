@@ -20,13 +20,13 @@ function createWindow() {
     width: sizeConstants.width,
     height: sizeConstants.height,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.js')
     },
     center: true,
     transparent: true,
     frame: false,
     show: false,
-    fullScreenable: false,
+    fullScreenable: false
   });
 
   app.dock.hide();

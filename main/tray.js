@@ -17,12 +17,12 @@ exports.setTray = () => {
     Menu.buildFromTemplate([
       {
         label: 'Shortcut',
-        submenu: Menu.buildFromTemplate(['alt+space', 'ctrl+space'].map((key) => ({ label: key, click: () => setShortcut(key), type: 'radio', checked: key === shortcut }))),
+        submenu: Menu.buildFromTemplate(['alt+space', 'ctrl+space'].map((key) => ({ label: key, click: () => setShortcut(key), type: 'radio', checked: key === shortcut })))
       },
       {
         label: 'Quit',
-        click: () => app.quit(),
-      },
+        click: () => app.quit()
+      }
     ])
   );
 };

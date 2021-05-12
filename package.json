@@ -17,6 +17,7 @@
   },
   "productName": "Code Open Recent Workspace",
   "dependencies": {
+    "prettier": "^2.3.0",
     "shell-path": "^2.1.0"
   }
 }
