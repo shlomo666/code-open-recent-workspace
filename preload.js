@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const { ipcRenderer } = require('electron');
 const { getUnorderedList, replaceHTML, resetHTML, up, down, getCurrentResult } = require('./preload/elements');
-const { getListOfWorkspacesByRecentOrder, onSettingChanged } = require('./preload/vscodeSettingsReader');
+const { getListOfWorkspacesByRecentOrder } = require('./preload/vscodeSettingsReader');
 
 window.addEventListener('DOMContentLoaded', () => {
   const searchField = document.getElementById('searchField');
@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const { key } = event;
     const currentResult = getCurrentResult();
     if (key === 'Enter' && currentResult) {
-      exec(`code ${currentResult}`);
+      exec(`code '${currentResult}'`);
       resetHTML();
       ipcRenderer.send('hide');
     }
@@ -44,11 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 });
 
-let listOfWorkspacesByRecentOrder = getListOfWorkspacesByRecentOrder();
-onSettingChanged(() => {
-  listOfWorkspacesByRecentOrder = getListOfWorkspacesByRecentOrder();
-});
-
 function getChoices(regex) {
+  const listOfWorkspacesByRecentOrder = getListOfWorkspacesByRecentOrder();
   return [...new Set([...listOfWorkspacesByRecentOrder.filter((p) => regex.test(p.split('/').pop())), ...listOfWorkspacesByRecentOrder.filter((p) => regex.test(p))])].slice(0, 8);
 }

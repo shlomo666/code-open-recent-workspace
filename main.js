@@ -26,12 +26,12 @@ function createWindow() {
     transparent: true,
     frame: false,
     show: false,
+    fullScreenable: false,
   });
 
   app.dock.hide();
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true);
-  mainWindow.setFullScreenable(false);
   tray.setTray();
 
   setTimeout(() => {
