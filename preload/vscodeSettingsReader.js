@@ -2,17 +2,19 @@ const fs = require('fs');
 
 const vscodeSettingsFilePath = `${process.env.HOME}/Library/Application Support/Code/storage.json`;
 
-let cachedOrder = null;
 const getListOfWorkspacesByRecentOrder = () => {
   const settings = JSON.parse(fs.readFileSync(vscodeSettingsFilePath).toString());
 
   const { workspaces3, entries } = settings.openedPathsList;
+  /** @type {string[]} */
   const order = (workspaces3 || entries.map((p) => p.folderUri).filter((p) => p)).map((p) => decodeURI(p.slice(7)));
-  cachedOrder = order;
-  return order;
+  const existingOrder = order.filter((path) => fs.existsSync(path));
+
+  return existingOrder;
 };
 
 let ttl = 0;
+let cachedOrder = null;
 
 /** @returns {string[]} */
 exports.getListOfWorkspacesByRecentOrder = () => {
