@@ -1,34 +1,24 @@
 const fs = require('fs');
+const { cachedFn } = require('./utils');
 
-const vscodeSettingsFilePath = `${process.env.HOME}/Library/Application Support/Code/storage.json`;
+const FIFTEEN_MINUTES = 1000 * 60 * 15;
+const vscodeWorkspaceStoragePath = `${process.env.HOME}/Library/Application Support/Code/User/workspaceStorage`;
+const folderPathPrefix = 'file://';
 
 const getListOfWorkspacesByRecentOrder = () => {
-  const settings = JSON.parse(fs.readFileSync(vscodeSettingsFilePath).toString());
-
-  const { workspaces3, entries } = settings.openedPathsList;
+  const workspaceIds = fs.readdirSync(vscodeWorkspaceStoragePath);
   /** @type {string[]} */
-  const order = (workspaces3 || entries.map((p) => p.folderUri).filter((p) => p)).map((p) => decodeURI(p.slice(7)));
-  const existingOrder = order.filter((path) => fs.existsSync(path));
-
-  return existingOrder;
+  const folderUris = workspaceIds.map((id) => require(`${vscodeWorkspaceStoragePath}/${id}/workspace.json`).folder);
+  const paths = folderUris.filter((f) => f && f.startsWith(folderPathPrefix)).map((p) => decodeURI(p.slice(folderPathPrefix.length)));
+  const existingPaths = paths.filter((path) => fs.existsSync(path));
+  return existingPaths;
 };
-
-let ttl = 0;
-let cachedOrder = null;
 
 /** @returns {string[]} */
-exports.getListOfWorkspacesByRecentOrder = () => {
-  if (ttl > Date.now() && cachedOrder) {
-    return cachedOrder;
-  } else {
-    ttl = Date.now() + 1000 * 60 * 15;
-    cachedOrder = getListOfWorkspacesByRecentOrder();
-    return cachedOrder;
-  }
-};
+exports.getListOfWorkspacesByRecentOrder = cachedFn(getListOfWorkspacesByRecentOrder, FIFTEEN_MINUTES);
 
 // Listen to changes in vscode settings
-fs.watchFile(vscodeSettingsFilePath, () => {
-  cachedOrder = null;
-  exports.getListOfWorkspacesByRecentOrder(); // Don't read in real time
+fs.watch(vscodeWorkspaceStoragePath, () => {
+  exports.getListOfWorkspacesByRecentOrder.invalidate();
+  exports.getListOfWorkspacesByRecentOrder(); // Don't read in real time - preload it
 });
