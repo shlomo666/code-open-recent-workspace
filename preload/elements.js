@@ -15,6 +15,12 @@ exports.resetHTML = () => {
 /** @param {string[]} results
  * @param {RegExp} regex */
 exports.getUnorderedList = (results, regex) => {
+  if (!regex) {
+    choices = [];
+    choiceIdx = 0;
+    return '';
+  }
+
   if (JSON.stringify(choices) !== JSON.stringify(results)) {
     choices = results;
     choiceIdx = 0;
@@ -52,7 +58,6 @@ function liValue(result, regex, first) {
   } else {
     val = span(val, 'color: white');
   }
-  console.log({ path, name, result, val });
   return val;
 }
 

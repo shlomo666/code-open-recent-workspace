@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const search = (text) => {
     const regex = new RegExp(text, 'i');
     const results = getChoices(regex);
-    replaceHTML('results', getUnorderedList(results, regex));
+    replaceHTML('results', getUnorderedList(results, text && regex));
   };
 });
 
